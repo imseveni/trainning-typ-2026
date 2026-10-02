@@ -6,6 +6,18 @@
 
 ### 1. SQL cơ bản
 
+#### Mô tả bài toán
+
+Em xây dựng CSDL cho bài toán quản lý CLB đơn giản. Hệ thống lưu trữ dữ liệu phục vụ một số hoạt động của CLB và có nhóm người sử dụng là các thành viên trong CLB.
+
+Các dữ liệu cần lưu gồm:
+- Thông tin thành viên
+- Thông tin ban chuyên môn
+- Thông tin sự kiện
+- Thông tin các giao dịch thu chi
+
+CSDL tập trung lưu trữ dữ liệu, liên kết phát sinh trong quá trình hoạt động CLB.
+
 #### 1.1. DDL
 
 DDL bao gồm các lệnh dùng để xây dựng, sửa đổi hoặc xóa cấu trúc các đối tượng trong cơ sở dữ liệu (Database, Table, Index, View,...).
@@ -22,6 +34,8 @@ CREATE TABLE SuKien(
     NgayKetThuc DATE
 );
 ```
+
+![CREATE TABLE](screenshots/create_table.png)
 
 **b. ALTER TABLE**
 Dùng để sửa đổi cấu trúc của bảng đã tồn tại (thêm cột, sửa kiểu dữ liệu, xóa cột hoặc thêm/xóa ràng buộc).
@@ -41,6 +55,8 @@ Dùng để xóa hoàn toàn bảng khỏi cơ sở dữ liệu (xóa cả cấu
 DROP TABLE SuKien;
 ```
 
+![ALTER DROP](screenshots/alter_drop.png)
+
 #### 1.2. DML
 
 DML gồm các lệnh dùng để quản lý và tác động trực tiếp lên các bản ghi (dữ liệu) bên trong bảng mà không làm thay đổi cấu trúc bảng.
@@ -49,8 +65,10 @@ DML gồm các lệnh dùng để quản lý và tác động trực tiếp lên
 Dùng để truy vấn, trích xuất dữ liệu từ một hoặc nhiều bảng.
 
 ```SQL
-SELECT * FROM ThuChi;
+SELECT * FROM SuKien;
 ```
+
+![SELECT](screenshots/select.png)
 
 **b. INSERT**
 Dùng để chèn thêm một hoặc nhiều hàng dữ liệu mới vào bảng.
@@ -62,6 +80,8 @@ INSERT INTO SuKien (MaSK, TenSK, DiaDiem, NgayBatDau, NgayKetThuc) VALUES
 ('SK03', 'Teambuilding 2026', 'Ngoại thành', '2026-06-10', '2026-06-12');
 ```
 
+![INSERT](screenshots/insert.png)
+
 **c. UPDATE**
 Dùng để cập nhật dữ liệu của các hàng hiện có. Cần kết hợp điều kiện `WHERE` để tránh sửa toàn bộ bảng.
 
@@ -71,6 +91,8 @@ SET DiaDiem = 'HTA1'
 WHERE MaSK = 'SK02';
 ```
 
+![UPDATE](screenshots/update.png)
+
 **d. DELETE**
 Dùng để xóa một hoặc nhiều hàng dữ liệu dựa trên điều kiện lọc. Nếu bỏ qua `WHERE`, toàn bộ dữ liệu trong bảng sẽ bị xóa.
 
@@ -78,6 +100,8 @@ Dùng để xóa một hoặc nhiều hàng dữ liệu dựa trên điều ki�
 DELETE FROM SuKien 
 WHERE NgayBatDau <= '2025-10-20';
 ```
+
+![DELETE](screenshots/delete.png)
 
 #### 1.3. QUERY
 
@@ -90,6 +114,8 @@ FROM ThanhVien
 WHERE TrangThaiHD = 'Hoạt động'
 ```
 
+![WHERE](screenshots/where.png)
+
 **b. JOIN**
 Dùng để kết hợp các hàng từ hai hay nhiều bảng dựa trên một cột chung (thường là Primary Key - Foreign Key).
 
@@ -101,6 +127,8 @@ Dùng để kết hợp các hàng từ hai hay nhiều bảng dựa trên một
     INNER JOIN BanChuyenMon ON ThanhVien.MaBan = BanChuyenMon.MaBan
     ```
 
+    ![INNER JOIN](screenshots/inner_join.png)
+
 - `LEFT JOIN`: Trả về toàn bộ bản ghi từ bảng bên trái và các bản ghi khớp từ bảng bên phải. Nếu bên phải không có dữ liệu khớp, kết quả sẽ mang giá trị `NULL`.
 
     ```SQL
@@ -109,6 +137,8 @@ Dùng để kết hợp các hàng từ hai hay nhiều bảng dựa trên một
     LEFT JOIN BanChuyenMon ON ThanhVien.MaBan = BanChuyenMon.MaBan
     ```
 
+    ![LEFT JOIN](screenshots/left_join.png)
+
 - `RIGHT JOIN`: Trả về toàn bộ bản ghi từ bảng bên phải và các bản ghi khớp từ bảng bên trái. Nếu bên trái không khớp, trả về `NULL`.
 
     ```SQL
@@ -116,6 +146,8 @@ Dùng để kết hợp các hàng từ hai hay nhiều bảng dựa trên một
     FROM ThanhVien
     RIGHT JOIN BanChuyenMon ON ThanhVien.MaBan = BanChuyenMon.MaBan
     ```
+
+    ![RIGHT JOIN](screenshots/right_join.png)
 
 **c. GROUP BY**
 Gộp các hàng có cùng giá trị ở một hoặc nhiều cột thành các hàng tóm tắt. Thường đi kèm với các hàm tổng hợp (Aggregate Functions).
@@ -126,6 +158,8 @@ FROM ThanhVien
 GROUP BY MaBan;
 ```
 
+![GROUP BY](screenshots/group_by.png)
+
 **d. HAVING**
 Mệnh đề lọc dữ liệu áp dụng cho các nhóm đã được tạo bởi `GROUP BY` (hoặc sau khi tính toán hàm tổng hợp). `WHERE` không thể dùng trực tiếp trên hàm tổng hợp, trong khi `HAVING` được sinh ra để phục vụ điều đó.
 
@@ -135,6 +169,9 @@ FROM ThanhVien
 GROUP BY MaBan
 HAVING SoLuongThanhVien = 2;
 ```
+
+![HAVING](screenshots/having.png)
+
 **e. ORDER BY**
 Dùng để sắp xếp tập kết quả trả về theo thứ tự tăng dần (`ASC` - mặc định) hoặc giảm dần (`DESC`).
 
@@ -142,6 +179,8 @@ Dùng để sắp xếp tập kết quả trả về theo thứ tự tăng dần
 SELECT * FROM ThuChi
 ORDER BY SoTien DESC, MaGD ASC;
 ```
+
+![ORDER BY](screenshots/order_by.png)
 
 **f. Aggregate Functions**
 Các hàm tổng hợp nhận đầu vào là tập hợp nhiều giá trị của một cột và trả về một giá trị duy nhất. Ngoại trừ `COUNT(*)`, hầu hết các hàm tổng hợp đều bỏ qua giá trị `NULL`.
@@ -154,6 +193,8 @@ Các hàm tổng hợp nhận đầu vào là tập hợp nhiều giá trị c�
 | **MIN** | Tìm giá trị nhỏ nhất (số, chuỗi hoặc ngày tháng) | `SELECT MIN(SoTien) FROM ThuChi;` |
 | **MAX** | Tìm giá trị lớn nhất (số, chuỗi hoặc ngày tháng) | `SELECT MAX(SoTien) FROM ThuChi;` |
 
+![GROUP BY, HAVING kết hợp Hàm tổng hợp (COUNT, SUM, AVG, MIN, MAX)](screenshots/mix.png)
+
 ---
 
 ### 2. Index
@@ -163,7 +204,7 @@ Các hàm tổng hợp nhận đầu vào là tập hợp nhiều giá trị c�
 - **Khái niệm:** **Index** là một cấu trúc dữ liệu bổ trợ (thường dùng dạng cây B-Tree) được lưu trữ riêng biệt, giúp hệ quản trị cơ sở dữ liệu tra cứu và trích xuất dữ liệu nhanh hơn thay vì phải duyệt tuần tự qua từng bản ghi.
 - **Hình ảnh thực tế:** Index giống như **mục lục** ở cuối cuốn sách. Thay vì phải lật đọc từ trang 1 đến trang 500 (Table Scan) để tìm một từ khóa, bạn chỉ cần tra mục lục để nhảy ngay tới số trang cần đọc (Index Scan).
 - **Tại sao cần?**
-  - Tối ưu hóa độ phức tạp thuật toán tìm kiếm từ quét tuyến tính O(N) xuống tra cứu dạng cây O(log N).
+  - Tối ưu hóa độ phức tạp thuật toán tìm kiếm từ quét tuyến tính $O(N)$ xuống tra cứu dạng cây $O(\log N)$.
   - Tăng tốc rõ rệt các mệnh đề truy vấn: `WHERE`, `JOIN`, `ORDER BY`, `GROUP BY`.
   - Giảm thiểu đáng kể thao tác đọc/ghi đĩa vật lý (Disk I/O) và giảm tải CPU của máy chủ.
 
@@ -183,10 +224,10 @@ Các hàm tổng hợp nhận đầu vào là tập hợp nhiều giá trị c�
 
 #### 2.3. So sánh tốc độ trước và sau khi đánh Index
 
-##### Bước 1: Khởi tạo bảng và sinh 1.000.000 dòng dữ liệu mẫu
+##### Bước 1: Khởi tạo bảng và sinh 2.000.000 dòng dữ liệu mẫu
 
 ```SQL
-SET SESSION cte_max_recursion_depth = 1000000;
+SET SESSION cte_max_recursion_depth = 2000000;
 
 CREATE TABLE ThanhVienTest (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -197,22 +238,37 @@ CREATE TABLE ThanhVienTest (
 );
 
 DELIMITER $$
+
+DROP PROCEDURE IF EXISTS TaoDuLieuMau$$
 CREATE PROCEDURE TaoDuLieuMau()
 BEGIN
     DECLARE i INT DEFAULT 1;
-    START TRANSACTION;
-    WHILE i <= 1000000 DO
-        INSERT INTO ThanhVienTest (ho_ten, email, so_tien, ngay_tao)
+
+    SET autocommit = 0;
+    SET unique_checks = 0;
+    SET foreign_key_checks = 0;
+
+    WHILE i <= 2000000 DO
+        INSERT INTO ThanhVienTest (ho_ten, so_tien)
         VALUES (
             CONCAT('ThanhVien_', i),
-            CONCAT('user_', i, '@clb.edu.vn'),
-            ROUND(RAND() * 1000000, 2),
-            NOW() - INTERVAL FLOOR(RAND() * 365) DAY
+            ROUND(RAND() * 1000000, 2)
         );
+
+        IF MOD(i, 50000) = 0 THEN
+            COMMIT;
+        END IF;
+
         SET i = i + 1;
     END WHILE;
+
     COMMIT;
+
+    SET unique_checks = 1;
+    SET foreign_key_checks = 1;
+    SET autocommit = 1;
 END$$
+
 DELIMITER ;
 
 CALL TaoDuLieuMau();
@@ -222,8 +278,10 @@ CALL TaoDuLieuMau();
 
 ```SQL
 SELECT * FROM ThanhVienTest 
-WHERE so_tien < 10;
+WHERE so_tien < 1;
 ```
+
+![Trước khi đánh Index](screenshots/truoc_khi_danh_index.png)
 
 ##### Bước 3: Tạo Index trên cột `so_tien`
 
@@ -234,11 +292,16 @@ CREATE INDEX idx_so_tien ON ThanhVienTest(so_tien);
 ##### Bước 4: Kiểm tra truy vấn sau khi đánh Index
 
 ```SQL
-SELECT * FROM ThanhVienTest 
-WHERE so_tien < 10;
+SELECT SQL_NO_CACHE * FROM ThanhVienTest 
+WHERE so_tien < 1;
 ```
 
+![Sau khi đánh Index](screenshots/sau_khi_danh_index.png)
+
 ##### Bước 5: So sánh tốc độ trước và sau khi đánh Index
+
+Tốc độ trước khi đánh Index là: `79.735 s`
+Tốc độ sau khi đánh Index là: `0.204s`
 
 ---
 
@@ -258,7 +321,7 @@ Cách phân trang truyền thống bằng việc chỉ định vị trí bắt �
 
 - **Trang hiện tại:** `page` (bắt đầu từ 1)
 - **Số bản ghi mỗi trang:** `page_size`
-- `OFFSET` = (`page` - 1) x `page_size`
+- $$\text{OFFSET} = (\text{page} - 1) \times \text{page\_size}$$
 
 ##### Câu lệnh SQL minh họa:
 
@@ -303,8 +366,8 @@ LIMIT 10;
 
 | Tiêu chí | Offset-based (`LIMIT ... OFFSET`) | Cursor-based (`WHERE id > last id LIMIT N`) |
 | :---: | :--- | :--- |
-| **Cơ chế hoạt động** | MySQL duyệt qua toàn bộ `OFFSET` dòng đầu rồi bỏ qua, sau đó mới lấy N dòng tiếp theo. | Dùng trực tiếp B-Tree Index nhảy thẳng tới vị trí last_id O(log N) và lấy N dòng. |
-| **Hiệu năng khi dữ liệu lớn** | **Rất chậm ở trang sâu.** Ví dụ: `OFFSET 1000000 LIMIT 10` buộc máy chủ duyệt qua 1.000.010 dòng. | **Tốc độ ổn định tuyệt đối.** Dù ở trang 1 hay trang 1 triệu, thời gian xử lý vẫn dưới 1 ms. |
+| **Cơ chế hoạt động** | MySQL duyệt qua toàn bộ $\text{OFFSET}$ dòng đầu rồi bỏ qua, sau đó mới lấy $N$ dòng tiếp theo. | Dùng trực tiếp B-Tree Index nhảy thẳng tới vị trí $\text{last\_id}$ ($O(\log N)$) và lấy $N$ dòng. |
+| **Hiệu năng khi dữ liệu lớn** | **Rất chậm ở trang sâu.** Ví dụ: `OFFSET 1000000 LIMIT 10` buộc máy chủ duyệt qua $1.000.010$ dòng. | **Tốc độ ổn định tuyệt đối.** Dù ở trang 1 hay trang 1 triệu, thời gian xử lý vẫn dưới $1\text{ ms}$. |
 | **Tính ổn định (Data Drift)** | **Dễ trùng hoặc sót dòng:** Thêm bản ghi mới khi đang phân trang sẽ đẩy dòng cũ xuống trang sau. | **Nhất quán:** Dữ liệu mới thêm vào không ảnh hưởng đến vị trí con trỏ phía trước. |
 | **Ưu điểm** | • Dễ triển khai.<br>• Nhảy cóc đến trang bất kỳ (ví dụ: chuyển ngay sang trang 15). | • Hiệu năng tối ưu vượt trội.<br>• Không trùng lặp bản ghi khi có ghi dữ liệu thời gian thực. |
 | **Nhược điểm** | • Tụt giảm hiệu năng nghiêm trọng ở trang sâu.<br>• Dễ sai lệch dữ liệu khi cập nhật liên tục. | • **Không nhảy cóc được trang:** Bắt buộc duyệt tuần tự từ trang trước sang trang sau.<br>• Yêu cầu cột phân trang có thứ tự duy nhất (Unique) và có Index. |
@@ -386,6 +449,8 @@ INSERT INTO TaiKhoan (id, ten_chu_tk, so_du, version)
 VALUES (1, 'Van Chien', 1000.00, 1);
 ```
 
+![CHUẨN BỊ DỮ LIỆU](screenshots/4.5.1.png)
+
 ##### 4.5.2 Pessimistic Locking
 
 - **Ý tưởng cốt lõi:** Khóa cứng dòng dữ liệu ở cấp độ Database ngay khi bắt đầu đọc (`SELECT ... FOR UPDATE`). Bất kỳ ai đến sau muốn đọc (có khóa) hoặc cập nhật dòng này đều phải **đứng chờ** cho đến khi Transaction đầu tiên kết thúc.
@@ -411,8 +476,15 @@ SELECT so_du FROM TaiKhoan WHERE id = 1;
 -- Kết quả chính xác: 1000 - 100 + 200 = 1100.00 (Không bị mất cập nhật)
 ```
 
+![CHỌN NGƯỜI A](screenshots/transaction_nguoiA.png)
+![CHỌN NGƯỜI B](screenshots/transaction_nguoiB.png)
+![NGƯỜI A CHẠY VÀ COMMIT](screenshots/commit_nguoiA.png)
+![NGƯỜI B MỞ LOCK VÀ TIẾP TỤC CHẠY](screenshots/transaction_nguoiB_tiep_tuc_chay.png)
+
 **Thử nghiệm Timeout:** Nếu ở **Bước 4**, bạn không chạy lệnh `COMMIT` ở Tab 1 mà để Tab 2 chờ quá 50 giây (mặc định của `innodb_lock_wait_timeout`), Tab 2 sẽ tự động báo lỗi:
 `Error Code: 1205. Lock wait timeout exceeded; try restarting transaction.`
+
+![THÔNG BÁO](screenshots/thong_bao_lock.png)
 
 ##### 4.3 Optimistic Locking
 
@@ -423,6 +495,8 @@ SELECT so_du FROM TaiKhoan WHERE id = 1;
 UPDATE TaiKhoan SET so_du = 1000.00, version = 1 WHERE id = 1;
 ```
 
+![UPDATE SỐ DƯ](screenshots/Optimistic_Locking.png)
+
 ##### Thực thi từng bước:
 
 | Bước | Tab 1 (Người A - Rút 300) | Tab 2 (Người B - Rút 500) | Trạng thái & Cơ chế hệ thống |
@@ -432,6 +506,11 @@ UPDATE TaiKhoan SET so_du = 1000.00, version = 1 WHERE id = 1;
 | **3** | *App A tính toán:*<br>`1000 - 300 = 700` | *App B tính toán:*<br>`1000 - 500 = 500` | Xử lý logic tại bộ nhớ của Application Backend. |
 | **4** | `UPDATE TaiKhoan`<br>`SET so_du = 700, version = version + 1`<br>`WHERE id = 1 AND version = 1;` | | **Thành công (`1 row affected`):** Số dư cập nhật thành `700.00`, cột `version` tăng lên 2. |
 | **5** | | `UPDATE TaiKhoan`<br>`SET so_du = 500, version = version + 1`<br>`WHERE id = 1 AND version = 1;` | **Xung đột (`0 rows affected`):** Lệnh chạy thành công nhưng không cập nhật dòng nào, vì `version` trong DB hiện tại đã là 2 (không khớp với `version = 1`). |
+
+![CHỌN NGƯỜI A](screenshots/chon_nguoiA.png)
+![CHỌN NGƯỜI B](screenshots/chon_nguoiB.png)
+![NGƯỜI A GD THÀNH CÔNG](screenshots/nguoiA_gd_thanh_cong.png)
+![NGƯỜI B GD KHÔNG THÀNH CÔNG](screenshots/nguoiB_gd_khong_thanh_cong.png)
 
 ---
 
@@ -467,7 +546,7 @@ Cần nhóm các truy vấn vào một transaction khi:
 
 #### 5.4. Ví Dụ Thực Tế
 
-**Bài toán:** Khách hàng **A** chuyển 200.000 sang cho khách hàng **B**.
+**Bài toán:** Khách hàng **A** chuyển $200.000$ sang cho khách hàng **B**.
 * Thao tác 1: Trừ tiền tài khoản A.
 * Thao tác 2: Cộng tiền tài khoản B.
 * Yêu cầu: Cả 2 thao tác phải cùng thành công. Nếu trừ tiền A xong mà cộng tiền B bị lỗi, hệ thống phải **ROLLBACK** để hoàn lại tiền cho A.

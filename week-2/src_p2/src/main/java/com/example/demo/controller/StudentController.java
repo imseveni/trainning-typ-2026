@@ -147,12 +147,13 @@ public class StudentController {
         return null;
     }
 
+    // Them Department vao Student
     @PutMapping("/{studentId}/department/{departmentId}")
-    public ResponseEntity<?> assignDepartment(
+    public ResponseEntity<?> changeDepartment(
             @PathVariable Long studentId,
             @PathVariable Long departmentId) {
 
-        Student student = studentService.assignDepartment(studentId, departmentId);
+        Student student = studentService.changeDepartment(studentId, departmentId);
 
         if (student == null) {
             return ResponseEntity

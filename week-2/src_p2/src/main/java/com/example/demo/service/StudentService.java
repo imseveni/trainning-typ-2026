@@ -81,29 +81,38 @@ public class StudentService {
             return false;
         }
 
+        Department department = student.getDepartment();
+
+        if (department != null) {
+            department.getStudents().remove(student);
+        }
+
         studentRepository.delete(student);
 
         return true;
     }
 
-    public Student assignDepartment(Long studentId, Long departmentId) {
-        Student student = studentRepository
-                .findById(studentId)
-                .orElse(null);
+    // PUT /students/{studentId}/department/{departmentId}
+    public Student changeDepartment(Long studentId, Long departmentId) {
+        Student student = getById(studentId);
 
-        if (student == null) {
-            return null;
-        }
-
-        Department department = departmentRepository
+        Department newDepartment = departmentRepository
                 .findById(departmentId)
                 .orElse(null);
 
-        if (department == null) {
+        if (student == null || newDepartment == null) {
             return null;
         }
 
-        student.setDepartment(department);
+        Department oldDepartment = student.getDepartment();
+
+        if (oldDepartment != null) {
+            oldDepartment.getStudents().remove(student);
+        }
+
+        newDepartment.getStudents().add(student);
+
+        student.setDepartment(newDepartment);
 
         return studentRepository.save(student);
     }

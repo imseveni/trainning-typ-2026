@@ -1,0 +1,19 @@
+{
+    "properties": [
+        {
+            "name": "app.jwt.secret",
+            "type": "java.lang.String",
+            "description": "A description for 'app.jwt.secret'"
+        },
+        {
+            "name": "app.jwt.access-expiration-ms",
+            "type": "java.lang.String",
+            "description": "A description for 'app.jwt.access-expiration-ms'"
+        },
+        {
+            "name": "app.refresh-token.expiration-ms",
+            "type": "java.lang.String",
+            "description": "A description for 'app.refresh-token.expiration-ms'"
+        }
+    ]
+}

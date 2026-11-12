@@ -1,0 +1,102 @@
+/* Local system fonts avoid network dependencies and render Vietnamese clearly. */
+:root,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 16px;
+}
+
+.brand-copy strong,
+.page-intro h1,
+.welcome-panel h2,
+.booking-guide h2,
+.panel-heading h2,
+.stat-card > strong {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+.page-intro p { font-size: 17px; line-height: 1.65; }
+small { font-size: 13px; }
+.nav-item { font-size: 16px; }
+.connection-card p { font-size: 14px; }
+.text-button { font-size: 14px; }
+.topbar-tools label > span,
+.eyebrow,
+.panel-kicker,
+.stat-label,
+.selector-copy .eyebrow,
+.small-eyebrow { font-family: inherit; font-size: 12px; letter-spacing: .7px; }
+.stat-note { font-size: 14px; }
+.flow-step b { font-size: 14px; }
+.flow-step small { font-size: 12px; }
+.quick-link b { font-size: 14px; }
+.quick-link small { font-size: 13px; }
+.quick-tip p { font-size: 13px; }
+.event-info b { font-size: 15px; }
+.event-info small { font-size: 13px; }
+.stack-form label,
+.layout-form label { font-size: 14px; }
+.stack-form input,
+.stack-form textarea,
+.layout-form input,
+.selector-panel select { font-size: 16px; }
+.form-footnote,
+.tiny-note { font-size: 13px; }
+th { font-size: 12px; }
+td { font-size: 14px; }
+td strong { font-size: 14px; }
+td small { font-size: 12px; }
+.seat-legend { font-size: 13px; }
+.map-footer { font-size: 13px; }
+.muted-copy { font-size: 13px; }
+.toast { font-size: 15px; }
+.stat-label { font-size: 12px; }
+.button { font-size: 14px; }
+.seat-button { width: 34px; height: 34px; font-size: 12px; }
+.row-label { font-size: 12px; }
+.seat-row { gap: 9px; }
+.seat-grid { gap: 9px; }
+.workspace-label,.brand-copy small,.sidebar-foot { font-size: 12px; }
+.breadcrumbs { font-size: 14px; }
+.topbar-tools input { font-size: 14px; }
+.date-chip small { font-size: 11px; }
+.date-chip b { font-size: 13px; }
+.flow-step > span { font-size: 12px; }
+.quick-tip > span { font-size: 12px; }
+.stat-symbol { font-size: 15px; }
+.event-card .small-action,.table-actions .small-action { font-size: 12px; }
+.count-badge,.selection-count { font-size: 12px; }
+.form-index { font-size: 13px; }
+.selector-step { font-size: 12px; }
+.hold-status { font-size: 12px; }
+.hold-data small { font-size: 11px; }
+.hold-data b { font-size: 13px; }
+.hold-state-list b { font-size: 11px; }
+.hold-state-list small,.guide-note { font-size: 12px; }
+.action-result { font-size: 13px; }
+.action-result b { font-size: 14px; }
+.page-foot { font-size: 12px; }
+.user-badge { color: #52635a; font-size: 14px; font-weight: 700; white-space: nowrap; }
+.auth-dialog { width: min(440px, calc(100vw - 32px)); border: 1px solid #e3e9e3; border-radius: 14px; padding: 22px; color: #18312e; box-shadow: 0 24px 80px rgba(20, 48, 40, .22); }
+.auth-dialog::backdrop { background: rgba(18, 37, 33, .44); backdrop-filter: blur(3px); }
+.auth-mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 18px; padding: 4px; background: #f3f6f1; border-radius: 9px; }
+.auth-mode-switch button { border: 0; border-radius: 7px; padding: 9px; color: #738178; background: transparent; font-weight: 700; }
+.auth-mode-switch button.active { background: #fff; color: #355a39; box-shadow: 0 2px 7px rgba(28, 55, 40, .08); }
+.auth-dialog .stack-form { margin-top: 14px; }
+.auth-dialog .panel-heading h2 { font-size: 20px; }
+.auth-dialog .tiny-note { line-height: 1.6; }
+.race-user-form { display: grid; gap: 6px; margin: 10px 0 12px; }
+.race-user-form label { color: #687871; font-size: 13px; font-weight: 650; }
+.race-user-form input { width: 100%; min-width: 0; border: 1px solid #e3e9e3; border-radius: 7px; background: #fff; padding: 9px 10px; color: #18312e; font-size: 14px; }
+.race-user-form input:focus { outline: 2px solid #d9edc2; border-color: #9bc76a; }
+
+@media (max-width: 560px) {
+  .page-intro p { font-size: 15px; }
+  .quick-link small,
+  .tiny-note,
+  .form-footnote { font-size: 12px; }
+  .seat-button { width: 30px; height: 30px; }
+}

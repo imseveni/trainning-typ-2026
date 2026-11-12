@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f4">
+  <title>SmartTicket — Demo Console</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/readability.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#overview" aria-label="SmartTicket trang chủ">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-copy"><strong>smartticket</strong><small>OPERATOR CONSOLE</small></span>
+      </a>
+
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="primary-nav" aria-label="Điều hướng chính">
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">◫</span> Tổng quan <span class="nav-dot"></span></button>
+        <button class="nav-item" data-view="events"><span class="nav-icon">✳</span> Sự kiện</button>
+        <button class="nav-item" data-view="showtimes"><span class="nav-icon">◷</span> Suất diễn</button>
+        <button class="nav-item" data-view="seats"><span class="nav-icon">▦</span> Sơ đồ & giữ ghế</button>
+        <button class="nav-item" data-view="holds"><span class="nav-icon">▤</span> Lượt giữ & booking</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="connection-card">
+          <div class="connection-heading"><span class="status-light" id="connectionLight"></span><span id="connectionLabel">Đang kết nối</span></div>
+          <p>Backend Spring Boot<br><span id="apiHostLabel">localhost:8080</span></p>
+          <button class="text-button" id="checkConnection">Kiểm tra kết nối <span>↗</span></button>
+        </div>
+        <div class="sidebar-foot"><span class="mini-ticket">ST</span><span>DEMO BUILD <b>06</b></span><span class="live-pill">LOCAL</span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>SmartTicket</span><span class="crumb-slash">/</span><strong id="crumbCurrent">Tổng quan</strong></div>
+        <div class="topbar-tools">
+          <label class="api-field"><span>API</span><input id="apiBase" aria-label="Địa chỉ API" value="" placeholder="http://localhost:8080"></label>
+          <span id="userBadge" class="user-badge">Chưa đăng nhập</span>
+          <button class="button button-secondary" id="authButton" type="button">Đăng nhập / Đăng ký</button>
+          <button class="button button-outline hidden" id="logoutButton" type="button">Đăng xuất</button>
+        </div>
+      </header>
+
+      <div class="content-wrap">
+        <section class="view active" id="view-overview">
+          <div class="page-intro intro-row">
+            <div><div class="eyebrow"><span class="eyebrow-line"></span> BẢNG ĐIỀU KHIỂN</div><h1>Đưa sự kiện <em>vào guồng.</em></h1><p>Quản lý lịch diễn, sơ đồ ghế và theo dõi luồng đặt vé trong một nơi.</p></div>
+            <div class="date-chip"><span class="date-icon">◷</span><span><small>HÔM NAY</small><b id="todayLabel">—</b></span></div>
+          </div>
+
+          <div class="stat-grid">
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">SỰ KIỆN</span><span class="stat-symbol teal">✳</span></div><strong id="statEvents">—</strong><span class="stat-note">Tổng số sự kiện đã tạo</span></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">SUẤT DIỄN ĐANG CHỌN</span><span class="stat-symbol orange">◷</span></div><strong id="statShowtimes">—</strong><span class="stat-note">Chọn sự kiện ở mục Suất diễn</span></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">GHẾ ĐANG CHỌN</span><span class="stat-symbol blue">▦</span></div><strong id="statSeats">0</strong><span class="stat-note">Tối đa 4 ghế mỗi lượt giữ</span></article>
+            <article class="stat-card dark-stat"><div class="stat-top"><span class="stat-label">DATABASE LOCK</span><span class="lock-pulse"></span></div><strong>ACTIVE</strong><span class="stat-note">MySQL · Pessimistic lock</span></article>
+          </div>
+
+          <div class="overview-grid">
+            <section class="panel welcome-panel">
+              <div class="panel-kicker">QUY TRÌNH ĐẶT VÉ <span>01 — 04</span></div>
+              <h2>Một luồng rõ ràng.<br><em>Một ghế, một chủ.</em></h2>
+              <p>Tạo sự kiện, mở suất diễn, chọn ghế. Transaction và khóa bi quan bảo vệ ghế khi nhiều request cùng đến.</p>
+              <div class="flow-steps">
+                <div class="flow-step"><span>01</span><b>Tạo sự kiện</b><small>Nội dung & địa điểm</small></div>
+                <i></i><div class="flow-step"><span>02</span><b>Mở suất diễn</b><small>Giờ diễn & giá vé</small></div>
+                <i></i><div class="flow-step"><span>03</span><b>Chọn ghế</b><small>Sơ đồ trạng thái live</small></div>
+                <i></i><div class="flow-step"><span>04</span><b>Xác nhận</b><small>Giữ ghế & booking</small></div>
+              </div>
+              <button class="button button-primary" data-go="events">Bắt đầu với sự kiện <span>→</span></button>
+              <div class="welcome-stamp" aria-hidden="true">ST</div>
+            </section>
+            <section class="panel quick-panel">
+              <div class="panel-heading"><div><div class="eyebrow small-eyebrow">LỐI TẮT</div><h2>Đi nhanh tới</h2></div><span class="heading-mark">↗</span></div>
+              <button class="quick-link" data-go="events"><span class="quick-icon icon-lime">✳</span><span><b>Quản lý sự kiện</b><small>Tạo, sửa, xoá & phân trang</small></span><i>→</i></button>
+              <button class="quick-link" data-go="showtimes"><span class="quick-icon icon-peach">◷</span><span><b>Lịch suất diễn</b><small>Thiết lập thời gian và giá vé</small></span><i>→</i></button>
+              <button class="quick-link" data-go="seats"><span class="quick-icon icon-blue">▦</span><span><b>Sơ đồ ghế</b><small>Tạo layout và demo tranh chấp</small></span><i>→</i></button>
+              <button class="quick-link" data-go="holds"><span class="quick-icon icon-violet">▤</span><span><b>Tra cứu lượt giữ</b><small>Xem, xác nhận hoặc huỷ</small></span><i>→</i></button>
+              <div class="quick-tip"><span>i</span><p>Đăng nhập để giữ ghế. Chỉ tài khoản ADMIN mới được quản lý event, suất diễn và layout.</p></div>
+            </section>
+          </div>
+          <div class="page-foot"><span>SMARTTICKET API DEMO</span><span>EVENTS · SHOWTIMES · SEATS · HOLDS</span></div>
+        </section>
+
+        <section class="view" id="view-events">
+          <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> DANH MỤC</div><h1>Sự kiện <em>của bạn.</em></h1><p>Tạo và quản lý sự kiện. Xoá sự kiện chỉ khả dụng khi đã xoá các suất diễn và sơ đồ ghế liên quan.</p></div>
+          <div class="events-layout">
+            <section class="panel list-panel">
+              <div class="panel-heading"><div><div class="eyebrow small-eyebrow">EVENT LIBRARY</div><h2>Danh sách sự kiện</h2></div><button class="icon-button" id="refreshEvents" title="Tải lại">↻</button></div>
+              <div class="event-list" id="eventList"><div class="empty-state">Đang tải sự kiện…</div></div>
+              <div class="list-pagination"><span id="eventPageLabel">—</span><div><button class="pagination-button" id="prevPage" aria-label="Trang trước">←</button><button class="pagination-button" id="nextPage" aria-label="Trang sau">→</button></div></div>
+            </section>
+            <section class="panel form-panel admin-only hidden" id="eventAdminPanel">
+              <div class="panel-heading"><div><div class="eyebrow small-eyebrow" id="eventFormKicker">TẠO MỚI</div><h2 id="eventFormTitle">Thêm sự kiện</h2></div><span class="form-index">01</span></div>
+              <form id="eventForm" class="stack-form">
+                <input type="hidden" id="eventId">
+                <label>Tên sự kiện <input id="eventTitle" maxlength="180" placeholder="VD: Đêm nhạc mùa hè" required></label>
+                <label>Địa điểm <input id="eventVenue" maxlength="180" placeholder="VD: Nhà hát Thành phố" required></label>
+                <label>Mô tả <textarea id="eventDescription" rows="4" placeholder="Một vài dòng giới thiệu…"></textarea></label>
+                <div class="form-actions"><button class="button button-primary" id="saveEventButton" type="submit">Tạo sự kiện <span>→</span></button><button class="button button-quiet hidden" id="cancelEventEdit" type="button">Huỷ sửa</button></div>
+              </form>
+              <div class="form-footnote"><span class="required-dot">*</span> Tên và địa điểm là bắt buộc.</div>
+            </section>
+          </div>
+          <div class="page-foot"><span>EVENTS API</span><span>GET · POST · PUT · DELETE</span></div>
+        </section>
+
+        <section class="view" id="view-showtimes">
+          <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> LỊCH TRÌNH</div><h1>Suất diễn <em>đúng giờ.</em></h1><p>Mỗi suất diễn tạo một tập ghế độc lập từ layout của sự kiện.</p></div>
+          <section class="panel selector-panel">
+            <div class="selector-copy"><span class="selector-step">01</span><div><div class="eyebrow small-eyebrow">CHỌN SỰ KIỆN</div><b>Sự kiện cần lên lịch</b></div></div>
+            <select id="showtimeEventSelect" aria-label="Chọn sự kiện"><option value="">Chọn một sự kiện…</option></select>
+            <button class="button button-secondary" id="reloadShowtimes">Tải suất diễn <span>↻</span></button>
+          </section>
+          <div class="showtime-layout">
+            <section class="panel table-panel"><div class="panel-heading"><div><div class="eyebrow small-eyebrow">SCHEDULE</div><h2>Danh sách suất diễn</h2></div><span class="count-badge" id="showtimeCount">0 suất</span></div>
+              <div class="table-scroll"><table><thead><tr><th>SUẤT DIỄN</th><th>THỜI GIAN</th><th>GIÁ VÉ</th><th>THAO TÁC</th></tr></thead><tbody id="showtimeRows"><tr><td colspan="4" class="empty-cell">Chọn sự kiện để tải suất diễn.</td></tr></tbody></table></div>
+              <div class="detail-output hidden" id="showtimeDetail"></div>
+            </section>
+            <section class="panel form-panel showtime-form-panel admin-only hidden"><div class="panel-heading"><div><div class="eyebrow small-eyebrow" id="showtimeFormKicker">THIẾT LẬP</div><h2 id="showtimeFormTitle">Tạo suất diễn</h2></div><span class="form-index">02</span></div>
+              <form id="showtimeForm" class="stack-form">
+                <input type="hidden" id="showtimeEditId">
+                <label>Bắt đầu lúc <input id="showtimeStartAt" type="datetime-local" required></label>
+                <label>Giá vé (VND) <input id="showtimePrice" type="number" min="0" step="1000" placeholder="250000" required></label>
+                <div class="form-actions"><button class="button button-primary" id="saveShowtimeButton" type="submit">Tạo suất diễn <span>→</span></button><button class="button button-quiet hidden" id="cancelShowtimeEdit" type="button">Huỷ sửa</button></div>
+              </form>
+              <div class="form-footnote">Tạo layout ghế cho sự kiện trước khi mở suất diễn.</div>
+            </section>
+          </div>
+          <div class="page-foot"><span>SHOWTIMES API</span><span>CREATE · READ · UPDATE · DELETE</span></div>
+        </section>
+
+        <section class="view" id="view-seats">
+          <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> INVENTORY</div><h1>Chọn ghế <em>của bạn.</em></h1><p>Khởi tạo sơ đồ, chọn tối đa 4 ghế còn trống. Khóa bi quan xử lý các request cùng tranh một ghế.</p></div>
+          <section class="panel selector-panel seat-selectors">
+            <div class="selector-copy"><span class="selector-step">01</span><div><div class="eyebrow small-eyebrow">SỰ KIỆN</div><b>Chọn sự kiện</b></div></div>
+            <select id="seatEventSelect" aria-label="Chọn sự kiện cho sơ đồ"><option value="">Chọn một sự kiện…</option></select>
+            <div class="selector-copy selector-showtime-copy"><span class="selector-step">02</span><div><div class="eyebrow small-eyebrow">SHOWTIME</div><b>Chọn suất diễn</b></div></div>
+            <select id="seatShowtimeSelect" aria-label="Chọn suất diễn"><option value="">Chọn sự kiện trước…</option></select>
+            <button class="button button-secondary" id="refreshSeatMap">Tải sơ đồ <span>↻</span></button>
+          </section>
+          <div class="seat-layout">
+            <section class="panel map-panel"><div class="panel-heading"><div><div class="eyebrow small-eyebrow">SEAT MAP</div><h2>Sơ đồ khán phòng</h2></div><div class="seat-legend"><span><i class="legend-dot available"></i>Trống</span><span><i class="legend-dot held"></i>Đang giữ</span><span><i class="legend-dot sold"></i>Đã bán</span></div></div>
+              <div class="screen-indicator"><span></span><b>S T A G E</b><span></span></div>
+              <div class="seat-grid-wrap"><div class="seat-grid" id="seatGrid"><div class="empty-state">Chọn suất diễn để xem sơ đồ ghế.</div></div></div>
+              <div class="map-footer"><span id="seatMapSummary">Chưa tải sơ đồ</span><div><button class="text-button danger-text admin-only hidden" id="deleteLayoutButton" disabled>Xoá layout sự kiện</button></div></div>
+            </section>
+            <aside class="seat-side-column">
+              <section class="panel layout-panel admin-only hidden"><div class="panel-heading"><div><div class="eyebrow small-eyebrow">LAYOUT BUILDER</div><h2>Tạo sơ đồ ghế</h2></div><span class="form-index">03</span></div>
+                <form id="seatGenerateForm" class="layout-form"><div class="two-inputs"><label>Số hàng<input id="seatRows" type="number" min="1" max="26" value="6" required></label><label>Ghế / hàng<input id="seatsPerRow" type="number" min="1" max="50" value="10" required></label></div><button class="button button-secondary full-button" type="submit">Tạo layout <span>→</span></button></form>
+                <p class="tiny-note">Tối đa 26 hàng · 50 ghế mỗi hàng. Tạo layout trước khi tạo suất diễn.</p>
+              </section>
+              <section class="panel booking-panel"><div class="panel-heading"><div><div class="eyebrow small-eyebrow">YOUR SELECTION</div><h2>Giữ ghế</h2></div><span class="selection-count" id="selectionCount">0 / 4</span></div>
+                <div class="selected-seats" id="selectedSeats"><span class="muted-copy">Chưa chọn ghế nào</span></div>
+                <div class="booking-total"><span>TỔNG TẠM TÍNH</span><b id="bookingTotal">—</b></div>
+                <button class="button button-primary full-button" id="holdSelectedButton" disabled>Giữ ghế <span>→</span></button>
+                <div class="action-result hidden" id="holdResult" aria-live="polite"></div>
+                <p class="tiny-note" id="holdAuthHint">Đăng nhập để giữ ghế.</p>
+              </section>
+              <section class="panel booking-panel concurrency-panel">
+                <div class="panel-heading"><div><div class="eyebrow small-eyebrow">CONCURRENCY DEMO</div><h2>Hai request, một ghế</h2></div><span class="form-index">04</span></div>
+                <p class="tiny-note">User 1 là tài khoản đang đăng nhập. Nếu chưa có User 2, hãy đăng ký trước rồi đăng nhập lại User 1. Nhập thông tin User 2 để cùng tranh một ghế trống.</p>
+                <div class="race-user-form">
+                  <label for="raceUserEmail">Email User 2</label>
+                  <input id="raceUserEmail" type="email" autocomplete="username" placeholder="user2@example.com" required>
+                  <label for="raceUserPassword">Mật khẩu User 2</label>
+                  <input id="raceUserPassword" type="password" autocomplete="current-password" placeholder="Mật khẩu tài khoản thứ hai" required>
+                </div>
+                <button class="button button-secondary full-button" id="raceHoldButton" disabled>Đăng nhập User 2 và gửi đồng thời <span>↗</span></button>
+                <div class="action-result hidden" id="raceResult" aria-live="polite"></div>
+                <p class="tiny-note">Chọn đúng một ghế. Mật khẩu User 2 chỉ dùng để đăng nhập và không được lưu. Kết quả đúng: một request thành công, request còn lại nhận 409.</p>
+              </section>
+            </aside>
+          </div>
+          <div class="page-foot"><span>SEATS · TRANSACTIONS · LOCKS</span><span>MAX 4 SEATS / HOLD</span></div>
+        </section>
+
+        <section class="view" id="view-holds">
+          <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> ORDER DESK</div><h1>Lượt giữ <em>& booking.</em></h1><p>Tra cứu lượt giữ bằng ID. Xác nhận tạo booking; huỷ sẽ giải phóng ghế nếu lượt giữ còn hiệu lực.</p></div>
+          <div class="holds-layout">
+            <section class="panel lookup-panel"><div class="panel-heading"><div><div class="eyebrow small-eyebrow">LOOKUP</div><h2>Tra cứu lượt giữ</h2></div><span class="form-index">05</span></div>
+              <form id="holdLookupForm" class="stack-form"><label>Seat Hold ID<input id="holdIdInput" inputmode="numeric" placeholder="ID trả về sau khi giữ ghế" required></label><button class="button button-primary" id="holdLookupButton" type="submit" disabled>Tìm lượt giữ <span>→</span></button></form>
+              <div class="hold-detail hidden" id="holdDetail" aria-live="polite"></div>
+            </section>
+            <section class="panel booking-guide"><div class="eyebrow small-eyebrow">TRẠNG THÁI</div><h2>Từ chỗ ngồi<br>đến booking.</h2><div class="hold-state-list"><div><span class="state-icon state-active">1</span><span><b>ACTIVE</b><small>Giữ ghế tạm thời, chờ xác nhận</small></span></div><div><span class="state-icon state-confirmed">2</span><span><b>CONFIRMED</b><small>Booking thành công, ghế đã bán</small></span></div><div><span class="state-icon state-ended">3</span><span><b>EXPIRED / CANCELLED</b><small>Ghế được trả lại nếu còn thuộc lượt giữ</small></span></div></div><div class="guide-note">Một lượt giữ hết hạn sau 10 phút. Worker dọn lượt hết hạn định kỳ.</div></section>
+          </div>
+          <div class="page-foot"><span>HOLDS & BOOKINGS API</span><span>GET · CONFIRM · CANCEL</span></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <dialog id="authDialog" class="auth-dialog">
+    <div class="panel-heading"><div><div class="eyebrow small-eyebrow">SMARTTICKET ACCOUNT</div><h2 id="authTitle">Đăng nhập</h2></div><button class="icon-button" id="closeAuthDialog" type="button" aria-label="Đóng">×</button></div>
+    <div class="auth-mode-switch"><button type="button" data-auth-mode="login" class="active">Đăng nhập</button><button type="button" data-auth-mode="register">Tạo tài khoản</button></div>
+    <form id="authForm" class="stack-form">
+      <label id="authNameField" class="hidden">Họ tên<input id="authFullName" maxlength="120" autocomplete="name"></label>
+      <label>Email<input id="authEmail" type="email" maxlength="254" autocomplete="email" required></label>
+      <label>Mật khẩu<input id="authPassword" type="password" minlength="8" maxlength="72" autocomplete="current-password" required></label>
+      <button class="button button-primary" id="authSubmit" type="submit">Đăng nhập <span>→</span></button>
+      <p class="tiny-note" id="authHint">Đăng ký mặc định tạo tài khoản USER.</p>
+    </form>
+  </dialog>
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
